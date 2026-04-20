@@ -1,0 +1,196 @@
+/* Fonts: JetBrains Mono for data/headers, Inter for body */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* BITCOIN MAXI — ORANGE TERMINAL
+   Light mode kept minimal; dark mode is the hero. */
+:root {
+  --button-outline: rgba(0, 0, 0, 0.1);
+  --badge-outline: rgba(0, 0, 0, 0.05);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(247, 147, 26, 0.05);
+  --elevate-2: rgba(247, 147, 26, 0.12);
+
+  --background: 36 24% 97%;
+  --foreground: 25 15% 10%;
+  --border: 30 10% 86%;
+  --card: 36 20% 99%;
+  --card-foreground: 25 15% 10%;
+  --card-border: 30 10% 90%;
+
+  --sidebar: 36 20% 95%;
+  --sidebar-foreground: 25 15% 10%;
+  --sidebar-border: 30 10% 86%;
+  --sidebar-primary: 28 92% 54%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 30 15% 90%;
+  --sidebar-accent-foreground: 25 15% 10%;
+  --sidebar-ring: 28 92% 54%;
+
+  --popover: 36 20% 98%;
+  --popover-foreground: 25 15% 10%;
+  --popover-border: 30 10% 86%;
+
+  --primary: 28 92% 54%;           /* Bitcoin orange #F7931A */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 30 15% 92%;
+  --secondary-foreground: 25 15% 10%;
+  --muted: 30 12% 93%;
+  --muted-foreground: 25 5% 42%;
+  --accent: 28 85% 96%;
+  --accent-foreground: 28 90% 30%;
+  --destructive: 0 72% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 30 10% 86%;
+  --ring: 28 92% 54%;
+
+  --chart-1: 28 92% 54%;  /* orange */
+  --chart-2: 45 90% 52%;  /* gold */
+  --chart-3: 200 70% 45%; /* blue */
+  --chart-4: 140 50% 42%; /* green */
+  --chart-5: 0 70% 55%;   /* red */
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius: 0.375rem;
+
+  --shadow-2xs: 0 1px 0 0 hsl(28 40% 20% / 0.03);
+  --shadow-xs: 0 1px 2px 0 hsl(28 40% 20% / 0.04);
+  --shadow-sm: 0 2px 4px 0 hsl(28 40% 20% / 0.06);
+  --shadow: 0 4px 8px -2px hsl(28 40% 20% / 0.08);
+  --shadow-md: 0 6px 12px -3px hsl(28 40% 20% / 0.1);
+  --shadow-lg: 0 12px 24px -6px hsl(28 40% 20% / 0.12);
+  --shadow-xl: 0 20px 40px -10px hsl(28 40% 20% / 0.15);
+  --shadow-2xl: 0 32px 60px -15px hsl(28 40% 20% / 0.2);
+}
+
+/* DARK — TERMINAL HERO */
+.dark {
+  --button-outline: rgba(255, 255, 255, 0.08);
+  --badge-outline: rgba(255, 255, 255, 0.05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(247, 147, 26, 0.08);
+  --elevate-2: rgba(247, 147, 26, 0.16);
+
+  --background: 25 15% 6%;         /* near-black with warm tint */
+  --foreground: 36 20% 92%;
+  --border: 28 10% 16%;
+  --card: 25 15% 9%;
+  --card-foreground: 36 20% 92%;
+  --card-border: 28 10% 16%;
+
+  --sidebar: 25 15% 7%;
+  --sidebar-foreground: 36 20% 92%;
+  --sidebar-border: 28 10% 16%;
+  --sidebar-primary: 28 95% 58%;
+  --sidebar-primary-foreground: 25 15% 6%;
+  --sidebar-accent: 28 20% 14%;
+  --sidebar-accent-foreground: 36 20% 92%;
+  --sidebar-ring: 28 95% 58%;
+
+  --popover: 25 15% 10%;
+  --popover-foreground: 36 20% 92%;
+  --popover-border: 28 10% 18%;
+
+  --primary: 28 95% 58%;           /* brighter orange for dark bg */
+  --primary-foreground: 25 15% 6%;
+  --secondary: 28 12% 14%;
+  --secondary-foreground: 36 20% 92%;
+  --muted: 28 10% 13%;
+  --muted-foreground: 30 8% 62%;
+  --accent: 28 20% 16%;
+  --accent-foreground: 28 95% 70%;
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 28 10% 20%;
+  --ring: 28 95% 58%;
+
+  --chart-1: 28 95% 58%;
+  --chart-2: 45 95% 60%;
+  --chart-3: 200 75% 58%;
+  --chart-4: 140 55% 52%;
+  --chart-5: 0 75% 62%;
+
+  --shadow-2xs: 0 1px 0 0 hsl(0 0% 0% / 0.2);
+  --shadow-xs: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+  --shadow-sm: 0 2px 4px 0 hsl(0 0% 0% / 0.4);
+  --shadow: 0 4px 8px -2px hsl(0 0% 0% / 0.5);
+  --shadow-md: 0 6px 12px -3px hsl(0 0% 0% / 0.5);
+  --shadow-lg: 0 12px 24px -6px hsl(0 0% 0% / 0.6);
+  --shadow-xl: 0 20px 40px -10px hsl(0 0% 0% / 0.7);
+  --shadow-2xl: 0 32px 60px -15px hsl(0 0% 0% / 0.8);
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { font-feature-settings: 'ss01', 'cv11'; }
+  body { @apply font-sans antialiased bg-background text-foreground; }
+
+  /* subtle scanline backdrop for terminal vibe */
+  .dark body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(247, 147, 26, 0.008) 2px,
+      rgba(247, 147, 26, 0.008) 3px
+    );
+    z-index: 1;
+  }
+
+  .mono { font-family: var(--font-mono); font-feature-settings: 'zero', 'ss01'; }
+
+  /* Orange glow for hero numbers */
+  .glow-orange { text-shadow: 0 0 20px hsl(28 95% 58% / 0.4), 0 0 4px hsl(28 95% 58% / 0.3); }
+
+  /* Ticker strip */
+  .ticker-tick { animation: tickerPulse 1s ease-in-out infinite; }
+  @keyframes tickerPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+}
+
+@layer utilities {
+  input[type='search']::-webkit-search-cancel-button { @apply hidden; }
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+  .no-default-hover-elevate {}
+  .no-default-active-elevate {}
+  .toggle-elevate::before, .toggle-elevate-2::before {
+    content: ''; pointer-events: none; position: absolute; inset: 0;
+    border-radius: inherit; z-index: -1;
+  }
+  .toggle-elevate.toggle-elevated::before { background-color: var(--elevate-2); }
+  .border.toggle-elevate::before { inset: -1px; }
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) { position: relative; z-index: 0; }
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: ''; pointer-events: none; position: absolute; inset: 0;
+    border-radius: inherit; z-index: 999;
+  }
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after { background-color: var(--elevate-1); }
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after { background-color: var(--elevate-2); }
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after { inset: -1px; }
+}

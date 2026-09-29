@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Portfolio, Sleeve } from "@shared/schema";
 import { SiteFooter, SiteHeader } from "@/components/site-header";
 import { Ticker } from "@/components/ticker";
@@ -35,6 +35,7 @@ export default function Belief() {
   const [seed, setSeed] = useState(0);
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const resultRef = useRef<HTMLDivElement | null>(null);
 
   const mutation = useMutation({
     mutationFn: async (payload: { belief: string; seed: number }) => {
@@ -44,6 +45,9 @@ export default function Belief() {
     onSuccess: (data) => {
       setPortfolio(data);
       setError(null);
+      requestAnimationFrame(() => {
+        resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
     },
     onError: (err) => {
       setError(err instanceof Error ? err.message : "Construct failed");
@@ -196,7 +200,7 @@ export default function Belief() {
         )}
 
         {portfolio && !mutation.isPending && (
-          <div className="mt-12" data-testid="belief-portfolio">
+          <div className="mt-12" data-testid="belief-portfolio" ref={resultRef}>
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <span className="mono text-[10px] uppercase tracking-widest text-primary">
                 {portfolio.mode === "llm" ? "Model book" : "Heuristic book"}

@@ -74,6 +74,7 @@ Think Bitbo meets Arkham Intelligence, focused purely on the **21M distribution 
 10. **Runs** in full dark-mode terminal aesthetic with orange Bitcoin accent and scanline backdrop
 11. **Serves** as a static-friendly build with Express API — deploy anywhere (S3, Vercel, VPS)
 12. **Ships** as a foundation for future widgets, email digests, and per-entity SEO pages
+13. **Constructs** a paper portfolio from a typed belief (`/#/belief`) — Bitcoin-adjacent by default, heuristic offline, optional LLM if `OPENAI_API_KEY` is set
 
 **Disclaimer: It's a quick hack, and we can't live without it**: Собрано на вайб-кодинге и изоленте за один вечер. Данные курируются вручную из публичных источников. Early release — ждите багов, устаревших чисел и опечаток. Но мы уже не можем жить без этой штуки.
 
@@ -86,6 +87,7 @@ Think Bitbo meets Arkham Intelligence, focused purely on the **21M distribution 
 - **Source-citeable by design:** Every row links to its source (Arkham report, SEC filing, government disclosure). No magic numbers.
 - **Terminal aesthetic:** JetBrains Mono for data, orange glow on hero numbers, live block-height ticker, scanline overlay. Feels like a Bitcoin maxi terminal, not a SaaS dashboard.
 - **Zero auth, zero login:** Pure read-only tool. Open the site, see the data.
+- **Belief → paper book:** Type a world-view on `/#/belief`. The server maps it onto a curated BTC + equity universe (spot, IBIT/FBTC, miners, Strategy, optional AI/infra, USDC sleeve). **PAPER only** — no brokerage, no orders, no wallet.
 
 ### Recent improvements
 
@@ -93,6 +95,7 @@ Think Bitbo meets Arkham Intelligence, focused purely on the **21M distribution 
 - **Detail drawer** with live per-entity news feed (DuckDuckGo scrape, 6h cache)
 - **Stacked supply visualiser** showing all 8 categories + untracked + unmined
 - **Category summary strip** doubles as a quick-filter toggle
+- **Belief → Portfolio** (`/#/belief`) — prompt box, example theses, regenerate / tweak, weights always sum to 100%
 
 ---
 
@@ -118,6 +121,16 @@ NODE_ENV=production node dist/index.cjs
 
 Open http://localhost:5000 — you should see the full leaderboard with live ticker.
 
+### Belief → paper portfolio
+
+1. Open http://localhost:5000/#/belief (or click **Belief** in the nav / **What do you believe?** on the home hero).
+2. Type a world-view, or click an example chip, then **Construct paper book**.
+3. The API is `POST /api/portfolio` with `{ "belief": "...", "seed": 0 }`.
+4. **No API key required.** Without `OPENAI_API_KEY` the server uses a deterministic rules engine over a curated Bitcoin-adjacent universe (BTC, IBIT/FBTC, MSTR, miners, optional AI/infra, USDC risk sleeve).
+5. Optional: copy `.env.example` to `.env` and set `OPENAI_API_KEY` (and optionally `OPENAI_MODEL`, default `gpt-4o-mini`). If the model call fails, the heuristic book is returned.
+
+This is a **paper simulation**. It is not investment advice and places no live orders.
+
 ---
 
 ## Available Endpoints
@@ -128,6 +141,7 @@ GET  /api/holders            - Full holder list sorted by BTC descending
 GET  /api/holders/:id        - Single holder by id
 GET  /api/holders/:id/news   - Recent news feed for a holder (6h cache)
 POST /api/refresh            - Force-refresh the stats cache
+POST /api/portfolio          - Construct a PAPER book from `{ belief, seed? }` (heuristic, or LLM if keyed)
 ```
 
 Every endpoint returns JSON. No auth required.
@@ -138,13 +152,16 @@ Every endpoint returns JSON. No auth required.
 
 - **Frontend** — React 18 + Vite + Tailwind + shadcn/ui
   - `client/src/pages/home.tsx` — single-page leaderboard + hero
+  - `client/src/pages/belief.tsx` — belief prompt → paper portfolio
   - `client/src/components/ticker.tsx` — live stats strip
   - `client/src/components/supply-bar.tsx` — 21M distribution visualiser
   - `client/src/components/holder-detail.tsx` — right-side detail drawer
 - **Backend** — Express (shared port with Vite in dev)
   - `server/data.ts` — curated holder dataset (source of truth)
+  - `server/universe.ts` — paper-portfolio instrument universe
+  - `server/portfolio.ts` — heuristic builder + optional OpenAI JSON path
   - `server/routes.ts` — API routes + daily cron for stats + news scraping
-- **Shared** — `shared/schema.ts` with Zod schemas for Holder / Stats
+- **Shared** — `shared/schema.ts` with Zod schemas for Holder / Stats / Portfolio
 - **Data sources** — mempool.space (block height), CoinGecko (price), DuckDuckGo (news), hand-curated holder list from Arkham / Bitbo / SEC filings
 
 **See:** `docs/ARCHITECTURE.md` for details (coming soon).
@@ -170,11 +187,15 @@ Total tracked: **~8.08M BTC (38.5% of 21M)**.
 
 ## Environment Variables
 
-Currently none required — the app runs out of the box. Future:
+Currently none required — the app (including `/#/belief`) runs out of the box.
 
-- `COINGECKO_API_KEY` — optional, for higher rate limits on price fetches
+- `OPENAI_API_KEY` — optional. If set, `POST /api/portfolio` asks the model for JSON, then validates against the curated universe. On any failure, the heuristic book is used.
+- `OPENAI_MODEL` — optional, default `gpt-4o-mini`
+- `COINGECKO_API_KEY` — optional, for higher rate limits on price fetches (future)
 - `MEMPOOL_URL` — override default `https://mempool.space` if self-hosting
 - `DATABASE_URL` — for persisting daily snapshots (SQLite by default, Postgres optional)
+
+See `.env.example`. Do not commit `.env` or secrets.
 
 ---
 

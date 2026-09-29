@@ -1,6 +1,8 @@
 import type { Express } from "express";
 import type { Server } from "http";
+import { portfolioRequestSchema } from "../shared/schema";
 import { HOLDERS } from "./data";
+import { constructPortfolio } from "./portfolio";
 
 // In-memory daily snapshot of network stats (cron-populated).
 // In production this would be a DB row — we keep it simple for MVP.
@@ -108,5 +110,23 @@ export async function registerRoutes(httpServer: Server, app: Express) {
   app.post("/api/refresh", async (_req, res) => {
     await refreshStats();
     res.json(cachedStats);
+  });
+
+  // Paper portfolio constructor — belief → simulated book. No orders, no persistence.
+  app.post("/api/portfolio", async (req, res) => {
+    const parsed = portfolioRequestSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: "invalid_belief",
+        message: parsed.error.issues[0]?.message ?? "Invalid request",
+      });
+    }
+    try {
+      const portfolio = await constructPortfolio(parsed.data.belief, parsed.data.seed ?? 0);
+      res.json(portfolio);
+    } catch (err) {
+      console.warn("[portfolio] construct failed:", (err as Error).message);
+      res.status(500).json({ error: "construct_failed", message: "Could not construct paper portfolio" });
+    }
   });
 }

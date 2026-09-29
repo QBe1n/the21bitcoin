@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import type { Holder, Stats } from "@shared/schema";
-import { Logo } from "@/components/logo";
 import { Ticker } from "@/components/ticker";
 import { SupplyBar } from "@/components/supply-bar";
 import { HolderDetail } from "@/components/holder-detail";
+import { SiteFooter, SiteHeader } from "@/components/site-header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,8 @@ import {
   pctOf21m,
   TOTAL_SUPPLY,
 } from "@/lib/format";
-import { Search, ExternalLink, Github, Twitter } from "lucide-react";
+import { Search, ExternalLink, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 
 type CategoryFilter = keyof typeof CATEGORY_META | "all";
 
@@ -65,43 +66,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Nav */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-20">
-        <div className="mx-auto max-w-[1400px] px-6 h-14 flex items-center gap-4">
-          <div className="flex items-center gap-3">
-            <Logo size={28} />
-            <div className="mono font-bold tracking-tight">
-              the<span className="text-primary">21</span>bitcoin
-            </div>
-            <span className="mono text-[10px] uppercase tracking-widest text-muted-foreground hidden sm:inline border-l border-border pl-3">
-              Ownership Tracker
-            </span>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <a
-              href="https://mempool.space"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground hidden md:inline"
-            >
-              mempool
-            </a>
-            <a
-              href="#"
-              className="mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground"
-            >
-              <Twitter className="h-3.5 w-3.5" />
-            </a>
-            <a
-              href="#"
-              className="mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground"
-            >
-              <Github className="h-3.5 w-3.5" />
-            </a>
-          </div>
-        </div>
-      </header>
-
+      <SiteHeader />
       <Ticker />
 
       {/* Hero */}
@@ -123,6 +88,12 @@ export default function Home() {
               to BlackRock's IBIT, to the 6,000 BTC El Salvador DCA'd under a volcano. Updated daily from on-chain
               data, SEC filings, and government disclosures.
             </p>
+            <Button asChild className="mt-6 mono text-[11px] uppercase tracking-wider">
+              <Link href="/belief" data-testid="cta-belief">
+                What do you believe?
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
           </div>
 
           {/* Big number card */}
@@ -320,23 +291,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card/30 relative z-10">
-        <div className="mx-auto max-w-[1400px] px-6 py-8">
-          <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-            <div className="flex items-center gap-3">
-              <Logo size={20} />
-              <span className="mono text-xs text-muted-foreground">
-                the21bitcoin.com — built for Bitcoiners, by Bitcoiners
-              </span>
-            </div>
-            <div className="mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Data from Arkham, Bitbo, BitcoinTreasuries.net, mempool.space, and SEC filings.
-              Not financial advice.
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <HolderDetail
         holder={selected}
